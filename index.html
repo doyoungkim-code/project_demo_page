@@ -431,7 +431,7 @@
       let shown = 0;
       cards.forEach(function (card) {
         const tags = card.dataset.tags.split('|');
-        const okTag = active.size === 0 || Array.prototype.some.call(active, function (t) { return tags.indexOf(t) !== -1; });
+        const okTag = active.size === 0 || tags.some(function (t) { return active.has(t); });
         const okText = !q || card.dataset.search.indexOf(q) !== -1;
         const show = okTag && okText;
         card.classList.toggle('hidden', !show);

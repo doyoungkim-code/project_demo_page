@@ -418,18 +418,25 @@
     $('glossary-new-ko').value = ''; $('glossary-new-en').value = '';
     $('glossary-add-form').classList.add('hidden');
     updateGlossaryCount();
+    filterGlossary();
   });
   document.getElementById('glossary-tbody').addEventListener('click', function (e) {
     if (!e.target.classList.contains('glossary-del')) return;
     e.target.closest('tr').remove();
     updateGlossaryCount();
   });
-  $('glossary-search').addEventListener('input', function (e) {
-    const q = e.target.value.trim().toLowerCase();
+  function filterGlossary() {
+    const q = $('glossary-search').value.trim().toLowerCase();
+    const cat = $('glossary-category').value;
     document.querySelectorAll('#glossary-tbody tr').forEach(function (tr) {
-      tr.style.display = tr.textContent.toLowerCase().includes(q) ? '' : 'none';
+      const rowCat = tr.children[2] ? tr.children[2].textContent.trim() : '';
+      const okCat = cat === '전체' || rowCat === cat;
+      const okText = !q || tr.textContent.toLowerCase().includes(q);
+      tr.style.display = (okCat && okText) ? '' : 'none';
     });
-  });
+  }
+  $('glossary-search').addEventListener('input', filterGlossary);
+  $('glossary-category').addEventListener('change', filterGlossary);
   function updateGlossaryCount() {
     $('glossary-count').textContent = '총 ' + document.querySelectorAll('#glossary-tbody tr').length + '개 용어';
   }
