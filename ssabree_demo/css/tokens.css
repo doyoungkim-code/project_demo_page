@@ -1,0 +1,117 @@
+/* ============================================================
+   SSABREE 데모 — 디자인 토큰
+   android/.../core/designsystem/theme/Color.kt 를 그대로 복제.
+   surfaceVariant 계열은 앱이 Material3 기본값을 쓰므로
+   M3 baseline 값을 사용한다.
+   ============================================================ */
+
+:root {
+  /* ---- Light (기본) ---- */
+  --primary: #6495EB;             /* LoginButton */
+  --on-primary: #FFFFFF;
+  --background: #FBFBFB;          /* LightBackgroundColor */
+  --surface: #FFFFFF;             /* LightSurfaceColor */
+  --on-background: #1F1B17;
+  --on-surface: #1F1B17;
+  --field: #F1EEE9;               /* LightFieldColor (primaryContainer) */
+  --error: #B3261E;
+
+  /* M3 baseline (앱이 오버라이드하지 않는 역할) */
+  --surface-variant: #E7E0EC;
+  --on-surface-variant: #49454F;
+  --outline: #79747E;
+  --outline-variant: #CAC4D0;
+
+  /* 채팅 버블 (primaryContainer@30% / surfaceVariant@30% 근사) */
+  --bubble-mine: #F1EEE9;
+  --bubble-other: rgba(231, 224, 236, 0.55);
+
+  /* 하드코딩 액센트 (HomeScreen.kt 등) */
+  --splash-top: #2F6BFF;
+  --dday-fg: #5B7FFF;
+  --dday-bg: #EEF2FB;
+  --grad-project-a: #9FD7FF;
+  --grad-project-b: #B59CFF;
+  --grad-study-a: #8FD5FF;
+  --grad-study-b: #6BA9FF;
+
+  /* 로고 브랜드 컬러 (테마 불변) */
+  --logo-stroke: #1D6FD0;
+  --logo-hash: #4FA8E8;
+
+  /* 데모 페이지(폰 바깥) */
+  --page-bg: #E9EDF5;
+  --strip-bg: #1C1F27;
+  --strip-fg: #E8EAF2;
+
+  --font: 'Roboto', 'Noto Sans KR', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+}
+
+html[data-theme="dark"] {
+  --background: #151214;
+  --surface: #1F1B1D;
+  --on-background: #E9E3DC;
+  --on-surface: #E9E3DC;
+  --field: #2A262B;
+  --error: #F2B8B5;
+
+  --surface-variant: #49454F;
+  --on-surface-variant: #CAC4D0;
+  --outline: #938F99;
+  --outline-variant: #49454F;
+
+  --bubble-mine: #2A262B;
+  --bubble-other: rgba(73, 69, 79, 0.45);
+
+  --dday-bg: #232A3E;
+  --page-bg: #0C0B0D;
+}
+
+/* ============================================================
+   keyframes
+   ============================================================ */
+
+@keyframes indeterminate {
+  0%   { left: -40%; width: 40%; }
+  60%  { left: 100%; width: 40%; }
+  100% { left: 100%; width: 40%; }
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes page-fwd {
+  from { opacity: 0; transform: translateX(26px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes page-back {
+  from { opacity: 0; transform: translateX(-26px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes splash-pop {
+  from { opacity: 0; transform: scale(0.82); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes headsup-in {
+  from { transform: translateY(-130%); }
+  to   { transform: translateY(0); }
+}
+
+@keyframes flash-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(100, 149, 235, 0.65); }
+  100% { box-shadow: 0 0 0 14px rgba(100, 149, 235, 0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes dotpulse {
+  0%, 80%, 100% { opacity: 0.25; }
+  40% { opacity: 1; }
+}

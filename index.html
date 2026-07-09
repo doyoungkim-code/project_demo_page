@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>프로젝트 데모</title>
+  <meta name="description" content="번역의 민족 · 싸브리타임 — 브라우저만으로 동작하는 프로젝트 데모 쇼케이스" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='4' y='4' width='27' height='56' rx='9' fill='%23624de3'/%3E%3Crect x='33' y='4' width='27' height='56' rx='9' fill='%231D6FD0'/%3E%3C/svg%3E" />
+  <style>
+    :root {
+      --bunmin: #624de3;
+      --ssabree: #1D6FD0;
+      --fg: #23283f;
+      --fg-sub: #6a7191;
+      --panel-bunmin: linear-gradient(165deg, #f4f2ff 0%, #e9edfd 100%);
+      --panel-ssabree: linear-gradient(165deg, #ecf5ff 0%, #e5eefc 100%);
+      --mock-surface: #ffffff;
+      --mock-line: #e6e9f4;
+      --mock-skeleton: #edf0f9;
+      --font: 'Roboto', 'Noto Sans KR', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --fg: #eceef8;
+        --fg-sub: #9ba2c4;
+        --panel-bunmin: linear-gradient(165deg, #1a1733 0%, #141628 100%);
+        --panel-ssabree: linear-gradient(165deg, #10192b 0%, #121624 100%);
+        --mock-surface: #1e2240;
+        --mock-line: #2e3358;
+        --mock-skeleton: #292e52;
+      }
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--font);
+      color: var(--fg);
+    }
+
+    /* ============================================================
+       풀스크린 스플릿 — 패널 전체가 링크
+       ============================================================ */
+    main {
+      display: flex;
+      min-height: 100svh;
+    }
+
+    .panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(28px, 4.5vh, 48px);
+      padding: clamp(32px, 6vh, 72px) clamp(24px, 4vw, 64px);
+      text-decoration: none;
+      color: inherit;
+      overflow: hidden;
+      opacity: 0;
+      animation: reveal 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+      transition: flex 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+    .panel.bunmin  { background: var(--panel-bunmin);  --point: var(--bunmin); }
+    .panel.ssabree { background: var(--panel-ssabree); --point: var(--ssabree); animation-delay: 0.14s; }
+
+    @keyframes reveal {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (min-width: 861px) {
+      .panel:hover { flex: 1.22; }
+    }
+
+    .brand {
+      text-align: center;
+    }
+    .brand h2 {
+      font-size: clamp(26px, 3.2vw, 38px);
+      font-weight: 800;
+      letter-spacing: -0.8px;
+    }
+    .brand h2 em { font-style: normal; color: var(--point); }
+    .brand p {
+      margin-top: 10px;
+      font-size: clamp(14px, 1.3vw, 16px);
+      color: var(--fg-sub);
+    }
+
+    .mock-zone {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+    .panel:hover .mock-zone { transform: translateY(-6px) scale(1.03); }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--point);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 14px 30px;
+      border-radius: 999px;
+      box-shadow: 0 8px 22px color-mix(in srgb, var(--point) 35%, transparent);
+    }
+    .cta .arrow { transition: transform 0.25s; }
+    .panel:hover .cta .arrow { transform: translateX(4px); }
+
+    @media (max-width: 860px) {
+      main { flex-direction: column; }
+      .panel { min-height: 94svh; }
+    }
+
+    /* ============================================================
+       BUNMIN 목업 — 강의 화면 + 실시간 이중 자막
+       ============================================================ */
+    .screen-mock {
+      width: min(420px, 78vw, 44vh * 1.5);
+      aspect-ratio: 16 / 10.2;
+      background: var(--mock-surface);
+      border: 1px solid var(--mock-line);
+      border-radius: 16px;
+      box-shadow: 0 24px 60px rgba(30, 34, 70, 0.16);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .screen-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--mock-line);
+    }
+    .win-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--mock-skeleton); }
+    .live {
+      margin-left: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: #e5484d;
+    }
+    .live::before {
+      content: '';
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #e5484d;
+      animation: blink 1.6s ease-in-out infinite;
+    }
+    @keyframes blink { 50% { opacity: 0.25; } }
+
+    .slide {
+      flex: 1;
+      position: relative;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+    .sk { height: 10px; border-radius: 5px; background: var(--mock-skeleton); }
+    .sk.title { height: 15px; width: 55%; background: color-mix(in srgb, var(--bunmin) 22%, var(--mock-skeleton)); }
+    .sk.w80 { width: 80%; }
+    .sk.w65 { width: 65%; }
+    .sk.w72 { width: 72%; }
+
+    .mic {
+      position: absolute;
+      right: 16px;
+      bottom: 12px;
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: var(--bunmin);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .mic::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 2px solid var(--bunmin);
+      animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+    @keyframes ping { 75%, 100% { transform: scale(1.7); opacity: 0; } }
+    .mic svg { width: 14px; height: 14px; }
+
+    .subtitle {
+      background: rgba(18, 20, 40, 0.92);
+      padding: 11px 16px 12px;
+      position: relative;
+      min-height: 58px;
+    }
+    .sub-pair {
+      position: absolute;
+      inset: 11px 16px auto;
+      animation: subswap 9s ease-in-out infinite;
+    }
+    .sub-pair:nth-child(2) { animation-delay: -4.5s; opacity: 0; }
+    .sub-en {
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .sub-ko {
+      color: rgba(255, 255, 255, 0.62);
+      font-size: 11px;
+      margin-top: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    @keyframes subswap {
+      0%, 5%   { opacity: 0; transform: translateY(8px); }
+      10%, 45% { opacity: 1; transform: translateY(0); }
+      50%, 100%{ opacity: 0; transform: translateY(-6px); }
+    }
+
+    /* ============================================================
+       SSABREE 목업 — 폰 프레임 + 실시간 채팅
+       ============================================================ */
+    .phone-mock {
+      width: min(210px, 56vw, 40vh * 0.52);
+      aspect-ratio: 0.492;
+      background: var(--mock-surface);
+      border: 1px solid var(--mock-line);
+      border-radius: 26px;
+      box-shadow: 0 24px 60px rgba(20, 40, 80, 0.18);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .headsup {
+      position: absolute;
+      top: 8px; left: 10px; right: 10px;
+      background: var(--mock-surface);
+      border: 1px solid var(--mock-line);
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(20, 40, 80, 0.22);
+      padding: 8px 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 10px;
+      font-weight: 600;
+      transform: translateY(-140%);
+      animation: headsup 9s ease-in-out infinite 2s;
+      z-index: 2;
+    }
+    .headsup .hu-icon {
+      width: 20px; height: 20px; border-radius: 6px; flex: none;
+      background: var(--ssabree);
+      color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px;
+    }
+    .headsup .hu-sub { color: var(--fg-sub); font-weight: 400; margin-top: 1px; }
+    @keyframes headsup {
+      0%, 4%   { transform: translateY(-140%); }
+      9%, 32%  { transform: translateY(0); }
+      38%,100% { transform: translateY(-140%); }
+    }
+
+    .ph-status {
+      display: flex;
+      justify-content: space-between;
+      padding: 9px 14px 4px;
+      font-size: 9px;
+      font-weight: 600;
+      color: var(--fg-sub);
+    }
+
+    .ph-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px 9px;
+      border-bottom: 1px solid var(--mock-line);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .avatar {
+      width: 22px; height: 22px; border-radius: 50%; flex: none;
+      background: linear-gradient(135deg, #8FD5FF, #6BA9FF);
+      color: #fff;
+      font-size: 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .online { color: #3fb96c; font-size: 9px; font-weight: 500; margin-left: auto; }
+
+    .ph-chat {
+      flex: 1;
+      padding: 12px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .bubble {
+      max-width: 82%;
+      font-size: 10.5px;
+      line-height: 1.45;
+      padding: 7px 10px;
+      border-radius: 13px;
+      opacity: 0;
+      animation: pop 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+    }
+    .bubble.other {
+      align-self: flex-start;
+      background: var(--mock-skeleton);
+      border-top-left-radius: 4px;
+    }
+    .bubble.mine {
+      align-self: flex-end;
+      background: var(--ssabree);
+      color: #fff;
+      border-top-right-radius: 4px;
+    }
+    .bubble:nth-child(1) { animation-delay: 0.7s; }
+    .bubble:nth-child(2) { animation-delay: 1.15s; }
+    .bubble:nth-child(3) { animation-delay: 1.6s; }
+    @keyframes pop {
+      from { opacity: 0; transform: translateY(8px) scale(0.94); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .typing {
+      align-self: flex-start;
+      display: flex;
+      gap: 4px;
+      padding: 9px 11px;
+      border-radius: 13px;
+      border-top-left-radius: 4px;
+      background: var(--mock-skeleton);
+      opacity: 0;
+      animation: pop 0.45s 2.1s forwards;
+    }
+    .typing i {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--fg-sub);
+      animation: dot 1.2s infinite;
+    }
+    .typing i:nth-child(2) { animation-delay: 0.15s; }
+    .typing i:nth-child(3) { animation-delay: 0.3s; }
+    @keyframes dot { 0%, 60%, 100% { opacity: 0.25; } 30% { opacity: 1; } }
+
+    .ph-input {
+      margin: 0 10px 12px;
+      height: 30px;
+      border-radius: 999px;
+      background: var(--mock-skeleton);
+      display: flex;
+      align-items: center;
+      padding: 0 5px 0 12px;
+      font-size: 10px;
+      color: var(--fg-sub);
+    }
+    .ph-input .send {
+      margin-left: auto;
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--ssabree);
+      color: #fff;
+      font-size: 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
+  </style>
+</head>
+<body>
+  <main>
+
+    <!-- ============ 번역의 민족 ============ -->
+    <a class="panel bunmin" href="bunmin_demo/index.html" aria-label="번역의 민족 데모 열기">
+      <div class="brand">
+        <h2><em>번역의</em> 민족</h2>
+        <p>강의를 듣는 순간, 자막으로 번역됩니다</p>
+      </div>
+
+      <div class="mock-zone">
+        <div class="screen-mock">
+          <div class="screen-top">
+            <span class="win-dot"></span><span class="win-dot"></span><span class="win-dot"></span>
+            <span class="live">LIVE</span>
+          </div>
+          <div class="slide">
+            <span class="sk title"></span>
+            <span class="sk w80"></span>
+            <span class="sk w65"></span>
+            <span class="sk w72"></span>
+            <div class="mic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v1a7 7 0 0 0 14 0v-1M12 18v4"/>
+              </svg>
+            </div>
+          </div>
+          <div class="subtitle">
+            <div class="sub-pair">
+              <div class="sub-en">Today, let's look at binary search trees.</div>
+              <div class="sub-ko">오늘은 이진 탐색 트리를 살펴보겠습니다.</div>
+            </div>
+            <div class="sub-pair">
+              <div class="sub-en">Each node has at most two children.</div>
+              <div class="sub-ko">각 노드는 최대 두 개의 자식을 가집니다.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <span class="cta">데모 보기 <span class="arrow">→</span></span>
+    </a>
+
+    <!-- ============ 싸브리타임 ============ -->
+    <a class="panel ssabree" href="ssabree_demo/index.html" aria-label="싸브리타임 데모 열기">
+      <div class="brand">
+        <h2><em>싸브리</em>타임</h2>
+        <p>SSAFY의 하루가 손 안에서 실시간으로</p>
+      </div>
+
+      <div class="mock-zone">
+        <div class="phone-mock">
+          <div class="headsup">
+            <span class="hu-icon">✓</span>
+            <div>스터디 지원이 수락되었어요<div class="hu-sub">알고리즘 스터디 · 방금</div></div>
+          </div>
+          <div class="ph-status"><span>10:24</span><span>📶 🔋</span></div>
+          <div class="ph-header">
+            <span class="avatar">박</span> 박싸피 <span class="online">● 온라인</span>
+          </div>
+          <div class="ph-chat">
+            <div class="bubble other">스터디 지원 확인했어요! 환영합니다 🎉</div>
+            <div class="bubble mine">감사합니다! 잘 부탁드려요 🙌</div>
+            <div class="bubble other">내일 저녁 7시에 첫 모임 어때요?</div>
+            <div class="typing"><i></i><i></i><i></i></div>
+          </div>
+          <div class="ph-input">메시지 입력 <span class="send">↑</span></div>
+        </div>
+      </div>
+
+      <span class="cta">데모 보기 <span class="arrow">→</span></span>
+    </a>
+
+  </main>
+</body>
+</html>

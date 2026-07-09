@@ -1,0 +1,197 @@
+/* ============================================================
+   BUNMIN 데모 — 디자인 토큰
+   frontend/src/styles/index.css 의 CSS 변수를 그대로 복제.
+   브랜드 폰트(paybooc/ELAND/학교안심)는 demo/assets/fonts/ 에
+   동봉되어 있어 demo/ 폴더만 단독으로 배포해도 동일하게 렌더링됨.
+   (paybooc·ELAND 는 기업 배포 폰트 — 외부 공개 시 라이선스 확인)
+   ============================================================ */
+
+:root {
+  /* ---- Light Mode ---- */
+  --color-primary: #6495EB;
+  --color-on-primary: #FFFFFF;
+  --color-primary-container: #E8EDFB;
+
+  --color-secondary: #2A2F4A;
+  --color-tertiary: #4A4F6B;
+
+  --color-background: #F7F8FC;
+  --color-on-background: #2A2F4A;
+
+  --color-surface: #FFFFFF;
+  --color-on-surface: #2A2F4A;
+
+  --color-error: #E53E3E;
+
+  --color-gradient-blue: #7DB3FF;
+  --color-gradient-purple: #C0A4D6;
+
+  --color-overlay-surface: #2E3257;
+  --color-on-overlay-surface: #F0F1FA;
+  --color-overlay-border: #454A78;
+
+  --color-lecturer-accent: #7858B0;
+
+  /* Start 페이지·모드 토글 전용 브랜드 보라 */
+  --color-bunmin: #624de3;
+}
+
+html[data-theme="dark"] {
+  --color-primary: #7DA9F5;
+  --color-on-primary: #0F1228;
+  --color-primary-container: #2D3259;
+
+  --color-secondary: #E8E9F5;
+  --color-tertiary: #B0B4D6;
+
+  --color-background: #13152C;
+  --color-on-background: #E8E9F5;
+
+  --color-surface: #1E2142;
+  --color-on-surface: #E8E9F5;
+
+  --color-error: #F87171;
+
+  --color-overlay-surface: #252A52;
+  --color-on-overlay-surface: #E8E9F5;
+  --color-overlay-border: #3E4475;
+
+  --color-lecturer-accent: #D8C5F0;
+}
+
+/* ---- Gradient Mode ---- 움직이는 하늘-보라 배경 + 글래스 서피스 */
+html[data-theme="gradient"] {
+  --color-background: transparent;
+  --color-on-background: #FFFFFF;
+
+  --color-surface: rgba(255, 255, 255, 0.1);
+  --color-on-surface: #FFFFFF;
+
+  --color-primary-container: rgba(255, 255, 255, 0.25);
+  --color-secondary: #FFFFFF;
+  --color-tertiary: #FFFFFF;
+
+  --color-overlay-border: rgba(255, 255, 255, 0.2);
+}
+
+html[data-theme="gradient"] body {
+  background: linear-gradient(
+    to right,
+    var(--color-gradient-blue) 0%,
+    var(--color-gradient-purple) 25%,
+    var(--color-gradient-blue) 50%,
+    var(--color-gradient-purple) 75%,
+    var(--color-gradient-blue) 100%
+  );
+  background-size: 800% 800%;
+  animation: gradient-shift 15s linear infinite;
+  min-height: 100vh;
+}
+
+html[data-theme="gradient"] .sidebar-card {
+  background: #E0DEF7;
+  --color-on-surface: #374151;
+  --color-on-background: #374151;
+}
+
+/* ============================================================
+   폰트
+   ============================================================ */
+
+@font-face {
+  font-family: 'Hakgyoansim Allimjang';
+  src: url('../assets/fonts/Hakgyoansim Allimjang OTF R.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Hakgyoansim Allimjang';
+  src: url('../assets/fonts/Hakgyoansim Allimjang OTF B.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'paybooc';
+  src: url('../assets/fonts/paybooc OTF Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'paybooc';
+  src: url('../assets/fonts/paybooc OTF Medium.otf') format('opentype');
+  font-weight: 400 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'paybooc';
+  src: url('../assets/fonts/paybooc OTF Bold.otf') format('opentype');
+  font-weight: 600 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'paybooc';
+  src: url('../assets/fonts/paybooc OTF ExtraBold.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'A2z';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-6@1.0/에이투지체-6SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ELAND Naise';
+  src: url('../assets/fonts/ELAND 나이스OTF M.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============================================================
+   keyframes
+   ============================================================ */
+
+@keyframes gradient-shift {
+  0%   { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.4; }
+}
+
+/* Tailwind animate-ping 대응 — 마이크 ON 링 */
+@keyframes ping {
+  75%, 100% { transform: scale(1.6); opacity: 0; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* index.html 의 .loader --4 로딩 바 */
+@keyframes loader-4 {
+  0%   { transform: translateX(-30px) scaleX(0.3); }
+  50%  { transform: translateX(0px) scaleX(1); }
+  100% { transform: translateX(30px) scaleX(0.3); }
+}

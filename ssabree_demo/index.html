@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>싸브리타임 — 데모</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath d='M24 6C13.5 6 5 13.6 5 23c0 5.6 3.1 10.6 7.9 13.7L11 43l8.6-3.4c1.4.3 2.9.4 4.4.4 10.5 0 19-7.6 19-17S34.5 6 24 6z' fill='%231D6FD0'/%3E%3Cpath d='M19 16l-2.4 14M31.4 16 29 30M15 20.5h18.4M14 25.5h18.4' stroke='%23fff' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/frame.css" />
+  <link rel="stylesheet" href="css/app.css" />
+</head>
+<body>
+
+  <!-- ============================================================
+       스테이지 — 갤럭시 폰 1대 (+ 양방향 장면에서 폰 2 슬라이드 인)
+       ============================================================ -->
+  <div class="stage-outer">
+    <div class="stage" id="stage">
+
+      <div class="phone-wrap" id="phone1-wrap">
+        <div class="phone-label">김도영의 휴대폰</div>
+        <div class="phone" id="phone1">
+          <div class="statusbar">
+            <span class="sb-time" data-clock>10:24</span>
+            <span class="sb-icons" data-sbicons></span>
+          </div>
+          <div class="screen" data-screen></div>
+          <div class="headsup" data-headsup></div>
+          <div class="gesturebar"></div>
+        </div>
+      </div>
+
+      <div class="phone-wrap" id="phone2-wrap">
+        <div class="phone-label">박싸피의 휴대폰</div>
+        <div class="phone" id="phone2">
+          <div class="statusbar">
+            <span class="sb-time" data-clock>10:24</span>
+            <span class="sb-icons" data-sbicons></span>
+          </div>
+          <div class="screen" data-screen></div>
+          <div class="headsup" data-headsup></div>
+          <div class="gesturebar"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================
+       데모 컨트롤 스트립 (실제 앱 UI 아님)
+       ============================================================ -->
+  <div class="demo-strip">
+    <span class="brand" data-strip-logo>싸브리타임 데모</span>
+    <div class="demo-sep"></div>
+    <button id="demo-play" class="demo-play" type="button">▶ 데모 시작</button>
+    <button id="demo-reset" type="button" title="리셋">⟲</button>
+    <button id="demo-speed" type="button" title="배속">1x</button>
+    <div class="demo-sep"></div>
+    <button id="demo-theme" type="button" title="라이트/다크 전환">🌙 다크</button>
+    <button id="demo-dual" type="button" title="상대방(박싸피) 폰 표시">📱 폰 2대</button>
+    <div class="demo-sep"></div>
+    <span id="demo-phase" class="demo-phase">데모 준비 완료 — ▶ 를 누르면 전체 기능 시연이 시작됩니다</span>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="js/icons.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/phone.js"></script>
+  <script src="js/ui-home.js"></script>
+  <script src="js/ui-board.js"></script>
+  <script src="js/ui-group.js"></script>
+  <script src="js/ui-chat.js"></script>
+  <script src="js/scenario.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

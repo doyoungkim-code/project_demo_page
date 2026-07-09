@@ -1,0 +1,256 @@
+/* ============================================================
+   SSABREE 데모 — 페이지 스테이지 + 갤럭시 폰 프레임 + 데모 스트립
+   폰 내부(앱 화면)는 app.css 담당.
+   ============================================================ */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { height: 100%; }
+
+body {
+  font-family: var(--font);
+  background: var(--page-bg);
+  overflow: hidden;
+  transition: background-color 0.25s;
+}
+
+/* ─── 스테이지 ─── */
+.stage-outer {
+  position: fixed;
+  inset: 0 0 56px 0;               /* 하단 데모 스트립 공간 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.stage {
+  display: flex;
+  align-items: flex-start;
+  gap: 44px;
+  transform-origin: center center;
+}
+
+.phone-wrap { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+
+.phone-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--on-background);
+  opacity: 0.55;
+  letter-spacing: 0.02em;
+  user-select: none;
+}
+html[data-theme="dark"] .phone-label { color: #C9CBD6; }
+
+/* 폰2 는 dual 모드에서만 등장 */
+#phone2-wrap {
+  display: none;
+  opacity: 0;
+  transform: translateX(48px);
+}
+.stage.dual #phone2-wrap {
+  display: flex;
+  animation: fade-in-up 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ─── 갤럭시 프레임 ─── */
+.phone {
+  position: relative;
+  width: 380px;
+  height: 800px;
+  border-radius: 38px;
+  border: 10px solid #16161a;
+  background: var(--background);
+  box-shadow:
+    0 0 0 2px #3c3c44,
+    0 30px 70px rgba(10, 15, 35, 0.4),
+    0 8px 22px rgba(10, 15, 35, 0.28);
+  overflow: hidden;
+  transition: background-color 0.25s;
+}
+
+/* 펀치홀 카메라 */
+.phone::before {
+  content: '';
+  position: absolute;
+  top: 11px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #2a2d36 0%, #000 60%);
+  z-index: 60;
+  pointer-events: none;
+}
+
+/* 상태바 */
+.statusbar {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 20px 0;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--on-background);
+  z-index: 50;
+  pointer-events: none;
+  transition: color 0.25s;
+}
+.statusbar .sb-icons { display: flex; align-items: center; gap: 5px; }
+.statusbar svg { width: 15px; height: 15px; fill: currentColor; }
+
+/* 앱 화면 영역 */
+.screen {
+  position: absolute;
+  inset: 0;
+  padding-top: 34px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* 제스처 내비게이션 바 */
+.gesturebar {
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 118px;
+  height: 4px;
+  border-radius: 4px;
+  background: currentColor;
+  color: var(--on-background);
+  opacity: 0.28;
+  z-index: 55;
+  pointer-events: none;
+}
+
+/* ─── FCM 헤드업 알림 (Android 시스템 알림 목업) ─── */
+.headsup {
+  position: absolute;
+  top: 40px;
+  left: 10px;
+  right: 10px;
+  z-index: 70;
+  background: var(--surface);
+  border-radius: 22px;
+  padding: 13px 16px;
+  box-shadow: 0 10px 34px rgba(10, 15, 35, 0.35), 0 2px 8px rgba(10, 15, 35, 0.2);
+  display: none;
+  animation: headsup-in 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.headsup.show { display: block; }
+.headsup .hu-app {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11.5px;
+  color: var(--on-surface-variant);
+  margin-bottom: 5px;
+}
+.headsup .hu-app svg { width: 15px; height: 15px; }
+.headsup .hu-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--on-surface);
+  margin-bottom: 2px;
+}
+.headsup .hu-body { font-size: 13px; color: var(--on-surface-variant); }
+
+/* ─── 시나리오 하이라이트 ─── */
+.demo-flash {
+  animation: flash-ring 0.9s ease-out 2;
+  border-radius: 14px;
+}
+
+/* ─── 데모 컨트롤 스트립 ─── */
+.demo-strip {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  height: 56px;
+  background: var(--strip-bg);
+  color: var(--strip-fg);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 18px;
+  z-index: 200;
+  box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.25);
+}
+.demo-strip .brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  margin-right: 4px;
+  user-select: none;
+}
+.demo-strip .brand svg { width: 22px; height: 22px; }
+.demo-strip button {
+  font-family: var(--font);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--strip-fg);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 9px;
+  padding: 7px 13px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+.demo-strip button:hover { background: rgba(255, 255, 255, 0.16); }
+.demo-strip .demo-play {
+  background: #6495EB;
+  border-color: #6495EB;
+  color: #fff;
+  font-weight: 700;
+  padding: 7px 18px;
+}
+.demo-strip .demo-play:hover { background: #5586e0; }
+.demo-strip .demo-play.playing { background: #3d5f9e; border-color: #3d5f9e; }
+.demo-strip .demo-sep {
+  width: 1px;
+  height: 26px;
+  background: rgba(255, 255, 255, 0.15);
+  margin: 0 4px;
+}
+.demo-strip .demo-phase {
+  flex: 1;
+  font-size: 13px;
+  opacity: 0.85;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ─── 토스트 (페이지 하단) ─── */
+.toast {
+  position: fixed;
+  bottom: 72px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(28, 31, 39, 0.94);
+  color: #fff;
+  font-size: 13.5px;
+  padding: 11px 20px;
+  border-radius: 999px;
+  z-index: 300;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.35);
+  animation: fade-in-up 0.25s ease-out;
+  max-width: 82vw;
+  text-align: center;
+}
+.toast.hidden { display: none; }
+
+/* ─── 좁은 화면: 세로 스택 ─── */
+@media (max-width: 640px) {
+  .stage { flex-direction: column; align-items: center; gap: 28px; }
+  .demo-strip { flex-wrap: wrap; height: auto; padding: 8px 12px; }
+  .demo-strip .demo-phase { display: none; }
+}
